@@ -42,8 +42,13 @@ vi.mock('@/redux/services/connector/githubConnectorApi', () => ({
   GithubConnectorApi: { util: { resetApiState: vi.fn(() => ({ type: 'reset' })) } }
 }));
 
+interface MockAppState {
+  user: { activeOrganization: { id: string } };
+  githubConnector: { activeConnectorId: string | null };
+}
+
 vi.mock('@/redux/hooks', () => ({
-  useAppSelector: (selector: (s: any) => any) =>
+  useAppSelector: <T>(selector: (s: MockAppState) => T): T =>
     selector({
       user: { activeOrganization: { id: 'org-1' } },
       githubConnector: { activeConnectorId: null }
